@@ -11,16 +11,41 @@ int main () {
 
 	//ofstream 	
 	//It is used to create files and write information to the files.
-    	ofstream filestream("testout.txt");  
+    	ofstream filestreamOut("testout.txt");  
 
-    	if (filestream.is_open())  
+    	if (filestreamOut.is_open())  
     	{  
-        	filestream << "Welcome to javaTpoint.\n";  
-        	filestream << "C++ Tutorial.\n";  
-        	filestream.close();  
+        	filestreamOut << "Welcome to javaTpoint.\n";  
+        	filestreamOut << "C++ Tutorial.\n";  
+        	filestreamOut.close();  
     	}  
     	else 
 		cout <<"File opening is fail.";  
     
+
+
+	//ifstream 	
+	//It is used to read information from files.
+	string str;  
+
+	ifstream filestreamIn("testout.txt");  
+  	if (filestreamIn.is_open())  
+  	{  
+    		while ( getline (filestreamIn,str) )  
+    		{  
+      			cout << str <<endl;  
+    		}  
+
+    		filestreamIn.close();  
+
+  	}	  
+  	else {  
+      		cout << "File opening is fail."<<endl;   
+    	}  
+
+
+
+
+
 	return 0;  
 }  
