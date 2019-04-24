@@ -1,9 +1,13 @@
 //writing to a file
 //
 //https://www.javatpoint.com/cpp-files-and-streams
+//https://www.tutorialspoint.com/cplusplus/cpp_date_time.htm
+//
 
 #include <iostream>  
 #include <fstream>  
+
+#include <ctime>
 
 struct bme280_data {
         /*! Compensated pressure */
@@ -14,7 +18,20 @@ struct bme280_data {
         double humidity;
 };
 
-
+//struct tm *localtime(const time_t *time);
+//This returns a pointer to the tm structure representing local time.
+/*struct tm {
+   int tm_sec;   // seconds of minutes from 0 to 61
+   int tm_min;   // minutes of hour from 0 to 59
+   int tm_hour;  // hours of day from 0 to 24
+   int tm_mday;  // day of month from 1 to 31
+   int tm_mon;   // month of year from 0 to 11
+   int tm_year;  // year since 1900
+   int tm_wday;  // days since sunday
+   int tm_yday;  // days since January 1st
+   int tm_isdst; // hours of daylight savings time
+   }
+*/
 
 using namespace std;  
 
@@ -26,12 +43,35 @@ int main () {
 
 
 	struct bme280_data bme = { 1020.6 , 27.7 , 45.3 }; 
+	
+	//current date/time based on current system
+   	time_t now = time(0);
+	//cout << "Number of sec since January 1,1970:" << now << endl;
+
+   	tm *ltm = localtime(&now);
+
+   	// print various components of tm structure.
+   	//cout << "Year" << 1970 + ltm->tm_year<<endl;
+   	//cout << "Month: "<< 1 + ltm->tm_mon<< endl;
+   	//cout << "Day: "<<  ltm->tm_mday << endl;
+   	//cout << "Time: "<< 1 + ltm->tm_hour << ":";
+   	//cout << 1 + ltm->tm_min << ":";
+   	//cout << 1 + ltm->tm_sec << endl;
+
+	int year = 1900 + ltm->tm_year;
+	int month = 1 + ltm->tm_mon;
+	int day = ltm->tm_mday;
+	int hour = ltm->tm_hour;
+	int min = ltm->tm_min;
+	int sec = ltm->tm_sec;
+
 
     	if (filestreamOut.is_open())  
     	{  
         	filestreamOut << "Welcome to javaTpoint.\n";  
         	filestreamOut << "C++ Tutorial.\n";  
-        	filestreamOut << bme.pressure << " " 
+        	filestreamOut << year << "-" << month << "-" << day << "-" << hour << "-" << min << "-" << sec << " "
+			      << bme.pressure << " " 
 		              << bme.temperature << " "  
 			      << bme.humidity << " " << endl;  
 
