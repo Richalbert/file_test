@@ -19,43 +19,44 @@ struct bme280_data {
         double humidity;
 };
 
-//struct tm *localtime(const time_t *time);
-//This returns a pointer to the tm structure representing local time.
-/*struct tm {
-   int tm_sec;   // seconds of minutes from 0 to 61
-   int tm_min;   // minutes of hour from 0 to 59
-   int tm_hour;  // hours of day from 0 to 24
-   int tm_mday;  // day of month from 1 to 31
-   int tm_mon;   // month of year from 0 to 11
-   int tm_year;  // year since 1900
-   int tm_wday;  // days since sunday
-   int tm_yday;  // days since January 1st
-   int tm_isdst; // hours of daylight savings time
-   }
-*/
 
 class Bme280 {
 
 	private:
 
-		struct bme280_data bme;
-
-   		time_t now;
+		struct bme280_data m_bme;
+   		time_t m_now;
 
 
 	public: 
 
 		//on contruit l objet avec les donnees du capteurs
 		Bme280() {
-			std::cout << "Constructor" << std::endl;
-			now = time(0);
-			std::cout << "Number of sec since January 1,1970:" << now << std::endl;
+			std::cout << "Constructor1" << std::endl;
+			m_now = time(0);
+			std::cout << "Number of sec since 1 January 1970 : " << m_now << std::endl;
 		}
 
-		//Bme280()
+//TODO ne marche pas!
+		//Bme280(double pressure, double temperature, double humidity):
+		//m_bme.pressure(pressure),
+		//m_bme.tempertature(temperature),
+		//m_bme.humidity(humidity)
+	      	//{
+		//	std::cout << "Constructor2" << std::endl;
+		//	Bme280();
+		//}
+
+		Bme280(double pressure, double temperature, double humidity){
+			std::cout << "Constructor2" << std::endl;
+			m_now = time(0);
+			m_bme.pressure = pressure;
+			m_bme.temperature = temperature;
+			m_bme.humidity = humidity;
+		}
 
 		void display() const {
-			struct tm *ltm = localtime(&now);
+			struct tm *ltm = localtime(&m_now);
 
 			int year = 1900 + ltm->tm_year;
 			int month = 1 + ltm->tm_mon;
@@ -66,6 +67,7 @@ class Bme280 {
 
 			std::cout<<year<<"-"<<month<<"-"<<day<<"-"<<hour<<"-"<<min<<"-"<<sec<<" "<<std::endl;
 
+	//		std::cout<<m_bme.pressure<<" "<<m_bme.temperature<<" "<<m_bme.humidity<<" "<<std::endl;  
 
 		}
 
@@ -81,6 +83,12 @@ int main () {
 
 	Bme280 bme280;
 	bme280.display();
+
+	Bme280 bme280_2(1024,25,30);
+	bme280_2.display();
+
+
+
 
 	//ofstream 	
 	//It is used to create files and write information to the files.
