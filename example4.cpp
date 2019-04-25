@@ -30,17 +30,23 @@ class Bme280 {
 
 	public: 
 
+		//constructor
 		Bme280(double pressure, double temperature, double humidity){
-			std::cout << "Constructor2" << std::endl;
-			m_now = time(0);
-			m_bme.pressure = pressure;
-			m_bme.temperature = temperature;
-			m_bme.humidity = humidity;
+			this->m_now = time(0);
+			this->m_bme.pressure = pressure;
+			this->m_bme.temperature = temperature;
+			this->m_bme.humidity = humidity;
 		}
+
+		//destructor
+		~Bme280(){
+			std::cout << "destructor" << std::endl;
+		}
+		
+
 
 		void display() const {
 			struct tm *ltm = localtime(&m_now);
-
 			int year = 1900 + ltm->tm_year;
 			int month = 1 + ltm->tm_mon;
 			int day = ltm->tm_mday;
@@ -52,16 +58,15 @@ class Bme280 {
 			std::cout<<m_bme.pressure<<" "<<m_bme.temperature<<" "<<m_bme.humidity<<" "<<std::endl;  
 		}
 
-		// on le sauve dans le fichier
 
 		void write_data_to_file(){
-			std::ofstream filestreamOut("data.txt");  
+			std::ofstream filestreamOut("data.txt",std::ios::app);  
 
     			if (filestreamOut.is_open()) {  
         			filestreamOut << m_now << " "
 				     	      << m_bme.pressure << " " 
 		              		      << m_bme.temperature << " "  
-			                      << m_bme.humidity << " " << std::endl;  
+			                      << m_bme.humidity << "\n" ;  
 
         			filestreamOut.close();  
     			}  
@@ -78,9 +83,19 @@ using namespace std;
 
 int main () {  
 
-	Bme280 bme280(1024,25,30);
-	bme280.display();
-	bme280.write_data_to_file();
+	//TODO
+	//string nomFichier("data.txt");
+	//ofstream monFlux(nomFichier.c_str());
+	//of (monFlux)
+
+
+
+	for (int i=0; i<10; i++) {
+		Bme280 bme280(1024+i,25+i,30+i);
+		bme280.display();
+		bme280.write_data_to_file();
+		bme280.~Bme280();
+	}
 
 
 
