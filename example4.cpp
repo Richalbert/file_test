@@ -30,23 +30,6 @@ class Bme280 {
 
 	public: 
 
-		//on contruit l objet avec les donnees du capteurs
-		Bme280() {
-			std::cout << "Constructor1" << std::endl;
-			m_now = time(0);
-			std::cout << "Number of sec since 1 January 1970 : " << m_now << std::endl;
-		}
-
-//TODO ne marche pas!
-		//Bme280(double pressure, double temperature, double humidity):
-		//m_bme.pressure(pressure),
-		//m_bme.tempertature(temperature),
-		//m_bme.humidity(humidity)
-	      	//{
-		//	std::cout << "Constructor2" << std::endl;
-		//	Bme280();
-		//}
-
 		Bme280(double pressure, double temperature, double humidity){
 			std::cout << "Constructor2" << std::endl;
 			m_now = time(0);
@@ -66,12 +49,26 @@ class Bme280 {
 			int sec = ltm->tm_sec;
 
 			std::cout<<year<<"-"<<month<<"-"<<day<<"-"<<hour<<"-"<<min<<"-"<<sec<<" "<<std::endl;
-
-	//		std::cout<<m_bme.pressure<<" "<<m_bme.temperature<<" "<<m_bme.humidity<<" "<<std::endl;  
-
+			std::cout<<m_bme.pressure<<" "<<m_bme.temperature<<" "<<m_bme.humidity<<" "<<std::endl;  
 		}
 
 		// on le sauve dans le fichier
+
+		void write_data_to_file(){
+			std::ofstream filestreamOut("data.txt");  
+
+    			if (filestreamOut.is_open()) {  
+        			filestreamOut << m_now << " "
+				     	      << m_bme.pressure << " " 
+		              		      << m_bme.temperature << " "  
+			                      << m_bme.humidity << " " << std::endl;  
+
+        			filestreamOut.close();  
+    			}  
+    			else 
+				std::cout <<"File opening is fail.";  
+		}
+
 
 };
 
@@ -81,11 +78,9 @@ using namespace std;
 
 int main () {  
 
-	Bme280 bme280;
+	Bme280 bme280(1024,25,30);
 	bme280.display();
-
-	Bme280 bme280_2(1024,25,30);
-	bme280_2.display();
+	bme280.write_data_to_file();
 
 
 
