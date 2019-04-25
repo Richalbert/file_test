@@ -4,11 +4,22 @@
 //https://www.tutorialspoint.com/cplusplus/cpp_date_time.htm
 //man locatime
 //
+//get current time;
+//
+//	time_t now;
+//	time(&now);  
+//
+//same as: 
+//
+//	time_t now;
+//	now = time(NULL);
+//
 
 #include <iostream>  
 #include <fstream>  
 
 #include <ctime>
+#include <unistd.h>
 
 struct bme280_data {
         /*! Compensated pressure */
@@ -27,12 +38,11 @@ class Bme280 {
 		struct bme280_data m_bme;
    		time_t m_now;
 
-
 	public: 
 
 		//constructor
 		Bme280(double pressure, double temperature, double humidity){
-			this->m_now = time(0);
+			this->m_now = time(NULL);	//get current time
 			this->m_bme.pressure = pressure;
 			this->m_bme.temperature = temperature;
 			this->m_bme.humidity = humidity;
@@ -43,7 +53,6 @@ class Bme280 {
 			std::cout << "destructor" << std::endl;
 		}
 		
-
 
 		void display() const {
 			struct tm *ltm = localtime(&m_now);
@@ -88,17 +97,29 @@ int main () {
 	//ofstream monFlux(nomFichier.c_str());
 	//of (monFlux)
 
+	time_t begin=time(NULL);	//get current time
+	time_t current;
 
+	
 
 	for (int i=0; i<10; i++) {
 		Bme280 bme280(1024+i,25+i,30+i);
+		sleep(2);
+		current=time(NULL);
+		std::cout << difftime(time(NULL),begin) << std::endl;
 		bme280.display();
 		bme280.write_data_to_file();
-		bme280.~Bme280();
+//		bme280.~Bme280();	//pas necesaire car l objet a une portee local dans le for
+//					//et est detruit a chaque tour
 	}
 
 
 
+
+
+return 0;
+}
+/*
 
 	//ofstream 	
 	//It is used to create files and write information to the files.
@@ -170,3 +191,4 @@ int main () {
 
 	return 0;  
 }  
+*/
