@@ -2,6 +2,7 @@
 //
 //https://www.javatpoint.com/cpp-files-and-streams
 //https://www.tutorialspoint.com/cplusplus/cpp_date_time.htm
+//man locatime
 //
 
 #include <iostream>  
@@ -33,9 +34,53 @@ struct bme280_data {
    }
 */
 
+class Bme280 {
+
+	private:
+
+		struct bme280_data bme;
+
+   		time_t now;
+
+
+	public: 
+
+		//on contruit l objet avec les donnees du capteurs
+		Bme280() {
+			std::cout << "Constructor" << std::endl;
+			now = time(0);
+			std::cout << "Number of sec since January 1,1970:" << now << std::endl;
+		}
+
+		//Bme280()
+
+		void display() const {
+			struct tm *ltm = localtime(&now);
+
+			int year = 1900 + ltm->tm_year;
+			int month = 1 + ltm->tm_mon;
+			int day = ltm->tm_mday;
+			int hour = ltm->tm_hour;
+			int min = ltm->tm_min;
+			int sec = ltm->tm_sec;
+
+			std::cout<<year<<"-"<<month<<"-"<<day<<"-"<<hour<<"-"<<min<<"-"<<sec<<" "<<std::endl;
+
+
+		}
+
+		// on le sauve dans le fichier
+
+};
+
+
+
 using namespace std;  
 
 int main () {  
+
+	Bme280 bme280;
+	bme280.display();
 
 	//ofstream 	
 	//It is used to create files and write information to the files.
@@ -46,7 +91,7 @@ int main () {
 	
 	//current date/time based on current system
    	time_t now = time(0);
-	//cout << "Number of sec since January 1,1970:" << now << endl;
+	cout << "\nNumber of sec since January 1,1970:" << now << endl;
 
    	tm *ltm = localtime(&now);
 
